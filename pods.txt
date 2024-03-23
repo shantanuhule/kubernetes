@@ -1,0 +1,74 @@
+--------------
+pods
+--------------
+
+kubectl create  -f podl.yaml
+
+kubectl get pod
+
+kubectl describe pod webapp-pod_pod-name 
+
+//detailed information about pod in yaml format
+kubectl get pod webapp-pod -o yaml 
+
+// to get pod in anothr file
+kubectl get pod webapp-pd -o yaml > webpod-defination.yaml
+
+//to edit pod
+kubectl edit pod webapp-pod
+
+--------------------
+
+(once lops cluster is created and updated )
+
+kubectl get nodes
+
+ls -a 
+
+cat .kube/config 
+
+
+kubectl get nodes
+
+kubectl describe node node_name 
+(detailed info about specific node)
+
+
+kubectl get node node_name -o yaml 
+(output in yaml format )
+
+------
+
+//run a pod
+
+mkdir definations 
+cd definations 
+mkdir pod
+vim vproapp
+------
+appVersion: v1
+kind: pod
+metadata:
+    name: vproapp
+    labels:
+    app: vproapp
+spec:
+    containers:
+        nmae: appcotainer
+        image: iname_name_or_dir
+        ports: 
+        name: vproapp-ports
+        containerPort: 8080
+---------
+
+
+kubectl create -f vproapp.yaml
+
+kubectl get pod
+
+kubectl describe pod
+
+kubectl get pod  
+
+// to delete pod
+kubectl delete pod 

@@ -1,0 +1,72 @@
+Service
+
+type of service:
+    NodePort
+    ClusterIP
+    loadBalancer
+
+
+kubectl create -f service-def.yaml
+
+kubectl.exe get svc
+
+kubectl.exe describe svc webapp-service
+
+
+---------------- vpronodeport.yaml
+apiVersion: v1
+kind: Service
+metadata:
+    name: helloworld-service
+spec:
+    ports:
+    - port:8090
+      NodePort:30001
+      targetPort: 8080
+      protocol: TCP
+    selector:
+            app: vproapp
+    type: NodePort
+
+-----------------
+kubectl create -f vproappport.yaml
+
+
+kubectl get svc
+
+
+kubectl describe svc  
+
+kubectl describe pod | grep IP 
+
+kubectl delete svc 
+
+
+------------------------
+
+
+loadBalancer
+
+
+
+
+apiVersion: v1
+kind: Service
+metadata:
+    name: helloworld-service
+spec:
+    ports:
+    - port:80
+      
+      targetPort: 8080
+      protocol: TCP
+    selector:
+            app: vproapp
+    type: Loadbalancer
+
+
+-------
+kubectl create -f vproapp.yaml
+
+kubectl get svc
+

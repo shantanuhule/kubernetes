@@ -1,0 +1,64 @@
+create an instance (key pair, security group)
+
+create an s3 bucket
+
+create a iam user (create assess key)
+
+
+create route 53 hosted zone and add the NS to dNS
+
+______________________
+
+ssh in ec2 instance
+ssh -i Downloads/kops_key.pem ubtuntu@ip
+//generate ssh keygen
+ssh-keygen
+
+sudo apt update && sudo apt install awscli
+
+aws configure 
+
+// install kubectl 
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+ls
+//give excutable permission
+chmod +x ./kubectl
+
+//move to another folder
+sudo mv kubectl /usr/local/bin/
+
+kubectl --version
+
+// install kops_key
+curl -Lo kops https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+chmod +x kops
+sudo mv kops /usr/local/bin/kops
+
+
+kops
+kops --version
+
+______________________
+
+nslookup -type=ns kubevpro.sh73.cloud
+
+---
+//create cluster  (creates the cluster and stores the configuration in the s3 bucket)
+
+kops create cluster --name=kubevpro.groophy.in \ 
+--state=s3://vprofile-kop-states --zones=us-east-2a,us-east-2b \ 
+--node-count=2 --node-size=t3.small --master-size=t3.medium --dns-zone=kubevpro.groophy.in \ 
+--node-volume-size=8 --master-volume-size=8
+
+// this will up the cluster
+kops update cluster --name kubevpro.groophy.in --state=s3://vprofile-kop-states --yes --admin
+
+cat /.kube/config 
+
+kubectl get nodes
+
+
+// delete the cluster
+kops delete cluster --name kubevpro.groophy.in --state=s3://vprofile-kop-states --yes --admin
+

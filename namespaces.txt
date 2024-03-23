@@ -1,0 +1,32 @@
+kubectl get ns
+
+// shows all the objects in the default namespace
+kubectl get all
+
+//all the resourses from all the namespaces
+kubectl get all --all-namespaces 
+
+// to get specific
+kubectl get svc -n kube-system
+
+
+----------
+//create namepsace 
+kubectl create ns kubekart
+
+kubectl run nginxl --image=nginx -n kubekart
+(pod created)
+
+---
+//specify namespace in yaml file and apply a namespacec to install
+
+vim podl.yaml
+
+kubectl apply -f podl.yaml
+
+kubectl get pod -n kubekart
+
+//delete namespace 
+kubectl delete ns kubekart
+
+--------------

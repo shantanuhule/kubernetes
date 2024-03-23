@@ -1,0 +1,18 @@
+
+kubectl get pod
+(in status you  will see the status of the pod  )
+ 
+ kubectl get pod -o wide 
+ 
+ lubectl get pod  pod_name -o yaml
+ (one way of finding more information :: in state you can see messages 
+ 
+ example :: backoff image - means wrong image name)
+
+ kubectl describe pod pod_name
+ // get detailed information
+
+
+ kubectl logs pod_name
+ (output of any process can be seen using logs)
+
