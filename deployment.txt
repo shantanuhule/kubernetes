@@ -1,0 +1,104 @@
+deploymet controller provides declarative updates for pods and replicasets
+
+define desired state in Deployment. and the Depolyment controller changes the actula state of the desired state at a controlled rate 
+
+Deployment creates Replicaset to manage number of pods
+
+-----------------------
+
+apiVersion: apps/v1
+kind:Deployment
+metadata:
+    name: app-controller
+spec:
+    template:
+        metadata:
+            labels:
+                app: backend
+        spec:
+            containers:
+            - name: tomcat-container
+              image: tomcat
+              ports:
+              - name: app-port 
+                containerPort: 8080
+    replicas: 3
+    selector:
+        matchLabels:
+            app: backend 
+
+
+
+-------------------------
+
+vim deploymet.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+
+
+kubectl apply -f deployment.yaml  
+
+kubectl get deploy 
+(here you will see deployments )
+
+kubectl get rs 
+(here you will see the replicaset )
+ 
+kubectl get pod 
+(here you will see the pod running from the deployment yaml file  )
+
+kubectl describe pod pod_name_1
+
+
+kubectl set image deployment.v1.apps/nginx-deployment nginx=nginx:1.16.1
+// this will update the image 
+
+kubectl get deploy 
+kubectl get pod 
+
+kubectl describe pod pod_name_1 
+(here you can see the pod image eis updated )
+
+kubectl get rs 
+// here you can se two replica set now 
+// the older one with 0 pods ready and running 
+// the newer one with new pods with updated image ready and running
+
+// to roll back to the previous depolyment 
+// u can do it the same eailer way by changing the image name or 
+// u can use the this command 
+
+kubectl rollout undo deployment/nginx-deployment
+
+kubectl get rs  
+(here you will see the desired output)
+
+kubectl rollout history deployment/nginx-deployment 
+(the rollout history is showen here)
+
+
+kubectl get deploy 
+
+// to delete deployment    
+kubectl delete deploy nginx-deployment
+

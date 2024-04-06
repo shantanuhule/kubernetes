@@ -1,0 +1,103 @@
+
+--------------------
+vim replset.yaml
+
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: frontend
+  labels:
+    app: guestbook
+    tier: frontend
+spec:
+  # modify replicas according to your case
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: php-redis
+        image: us-docker.pkg.dev/google-samples/containers/gke/gb-frontend:v5
+
+--------------------
+
+
+kubectl create -f replset.yaml
+
+kubectl get rs 
+(3 pods will be created )
+
+kubectl get pod
+(here the details of the 3 pods will be shown)
+
+
+kubectl delete pod pod_1 pod_2 
+(two pods will be deleted)
+
+kubectl get pod
+(after the two pod get delete , you can still se 3 pod running, because the replicaset will imaditely create new two pods)
+
+//to scale up the replicaset make changes in the yaml file set the desired number of replicaset and save the yaml file
+// replicas: 5
+
+kubectl apply -f replset.yaml 
+
+kubectl get pod 
+(you will se 5 pod running now)
+
+
+//command to scale replicas
+
+kubectl scale --replicas=1 rs/frontend 
+(this will scale down the replicaset from 5 to 1)
+
+
+kubectl get pod 
+(here you can see only one pod running )
+
+//edit 
+
+kubectl edit rs frontend
+(this will open the replset.yaml file and you can change the replicas)
+(replicas=2)
+
+kubectl get pod 
+(here you can see two pods running)
+
+
+//delete replica set 
+
+kubectl delete rs frontend
+
+----------------------------
+
+
+vim replset.yaml
+kubectl create -f replset.yaml
+kubectl get pod
+kubectl delete pod nginx1 nginx12 web2
+clear
+kubectl get pod
+clear
+kubectl get rs
+kubectl get pod
+kubectl delete pod frontend-qmxml frontend-s4kbp
+kubectl get pod
+vim replset.yaml
+kubectl apply -f replset.yaml
+clear
+kubectl get pod
+kubectl scale --replicas=1 rs/frontend
+kubectl get pod
+kubectl edit rs frontend
+kubectl get pod
+kubectl delete rs frontend
+kubectl get pod
+
+
